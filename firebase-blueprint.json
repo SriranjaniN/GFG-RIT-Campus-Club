@@ -1,0 +1,141 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile for students and admins",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "name": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "student"] },
+        "interests": { "type": "array", "items": { "type": "string" } },
+        "leaderboardPoints": { "type": "integer" },
+        "badges": { "type": "array", "items": { "type": "string" } },
+        "photoURL": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Event": {
+      "title": "Event",
+      "description": "Club events like workshops and hackathons",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "type": { "type": "string", "enum": ["Workshop", "Hackathon", "Contest"] },
+        "dateTime": { "type": "string", "format": "date-time" },
+        "registrationLink": { "type": "string" },
+        "posterUrl": { "type": "string" },
+        "maxSlots": { "type": "integer" },
+        "isTeamEvent": { "type": "boolean" },
+        "minTeamSize": { "type": "integer" },
+        "maxTeamSize": { "type": "integer" }
+      },
+      "required": ["title", "type", "dateTime"]
+    },
+    "Opportunity": {
+      "title": "Opportunity",
+      "description": "Curated external opportunities",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "type": { "type": "string", "enum": ["Internship", "Hackathon", "Competition", "Fellowship"] },
+        "domain": { "type": "string" },
+        "deadline": { "type": "string", "format": "date-time" },
+        "description": { "type": "string" },
+        "externalLink": { "type": "string" }
+      },
+      "required": ["title", "type", "externalLink"]
+    },
+    "Blog": {
+      "title": "Blog",
+      "description": "Club blog posts",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "author": { "type": "string" },
+        "category": { "type": "string" },
+        "content": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "author", "content"]
+    },
+    "Participation": {
+      "title": "Participation",
+      "description": "Tracks student participation in events",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "eventId": { "type": "string" },
+        "status": { "type": "string", "enum": ["registered", "attended", "pending_approval"] },
+        "userName": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "department": { "type": "string" },
+        "year": { "type": "string" },
+        "teamId": { "type": "string" },
+        "teamName": { "type": "string" },
+        "teamRole": { "type": "string", "enum": ["leader", "member"] },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "eventId", "status", "userName", "userEmail", "department", "year"]
+    },
+    "Team": {
+      "title": "Team",
+      "description": "Teams for events",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "eventId": { "type": "string" },
+        "leaderId": { "type": "string" },
+        "leaderName": { "type": "string" },
+        "members": { "type": "array", "items": { "type": "string" } },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "eventId", "leaderId", "leaderName"]
+    },
+    "Feedback": {
+      "title": "Feedback",
+      "description": "User feedback for events",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "eventId": { "type": "string" },
+        "eventTitle": { "type": "string" },
+        "rating": { "type": "integer" },
+        "review": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "eventId", "rating"]
+    },
+    "SupportQuery": {
+      "title": "SupportQuery",
+      "description": "User support queries",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "query": { "type": "string" },
+        "adminReply": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "resolved"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "resolvedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "query", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": { "schema": "User", "description": "User profiles" },
+    "/events/{eventId}": { "schema": "Event", "description": "Club events" },
+    "/opportunities/{opportunityId}": { "schema": "Opportunity", "description": "Curated opportunities" },
+    "/blogs/{blogId}": { "schema": "Blog", "description": "Blog posts" },
+    "/participation/{participationId}": { "schema": "Participation", "description": "Event participation tracking" },
+    "/teams/{teamId}": { "schema": "Team", "description": "Event teams" },
+    "/feedback/{feedbackId}": { "schema": "Feedback", "description": "Event feedback" },
+    "/support_queries/{queryId}": { "schema": "SupportQuery", "description": "Support queries" }
+  }
+}
